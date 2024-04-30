@@ -1,10 +1,15 @@
 class Producto{
-  constructor(nombre, precio, cantidad){
+  constructor(nombre, precio, cantidad, li){
     this.nombre=nombre;
     this.precio=precio;
     this.cantidad = cantidad;
+    this.li = li;
+  }
+  getPrecio() {
+    return (this.precio*this.cantidad).toFixed(2);
   }
 }
+var codigoPromocional = 1;
 var productosCarrito = Array();
 
 
@@ -32,69 +37,141 @@ var productosCarrito = Array();
 
 
 function añadirProducto(nombreProducto, precio,cantidad){
-  var producto = new Producto(nombreProducto, precio,cantidad);
-  productosCarrito.push(producto);
+  
   var listaCarrito = document.getElementById("listaCarrito");
   var li = document.createElement("li");
-  li.classList.add("list-group-item", "d-flex justify-content-between", "lh-sm", "producto");
-  listaCarrito.appendChild(li);
+  li.classList.add("list-group-item", "d-flex", "justify-content-between", "lh-sm", "producto");
 
+  var producto = new Producto(nombreProducto, precio,cantidad, li);
+  productosCarrito.push(producto);
   var div1 = document.createElement("div");
   div1.classList.add("btn-group", "me-2");
   div1.setAttribute("role", "group");
-  div1.appendChild(li);
 
   var button1 = document.createElement("button");
   button1.classList.add("btn", "btn-primary", "add");
   button1.setAttribute("type", "button");
-  button1.innerHTML = "-";
-  //EVENT CLICK
-  button1.appendChild(div1);
+  button1.innerHTML = "<strong>-</strong>";
+  button1.addEventListener("click", function(e){
+    if(producto.cantidad <= 1){
+      productosCarrito = productosCarrito.filter(item => item !== producto);
+      li.remove();
+    }else{
+      producto.cantidad -= 1;
+    }
+    actualizarLista();
+    actualizarValorTotal();
+  })
+  div1.appendChild(button1);
 
 
   
   var button2 = document.createElement("button");
   button2.classList.add("btn", "btn-primary", "add");
   button2.setAttribute("type", "button");
-  button2.innerHTML = "+";
-  //EVENT CLICK
-  button2.appendChild(div1);
+  button2.innerHTML = "<strong>+</strong>";
+  button2.addEventListener("click", function(e){
+      producto.cantidad += 1;
+      console.log(producto);
+      actualizarLista();
+      actualizarValorTotal();
+  })
   
-  /*
-
-  <div class="btn-group me-2" role="group" aria-label="First group">
-      <button type="button" class="btn btn-primary add" onclick="">-</button>
-      <button type="button" class="btn btn-primary remove" onclick="">+</button>              
-  </div>
-  */
+  div1.appendChild(button2);
+  
   var div = document.createElement("div");
-  li.appendChild(div);
+
 
   var h6 = document.createElement("h6");
   h6.classList.add("my-0");
-  h6.innerHTML = producto.nombre;
-  div.appendChild(h6);
+  h6.id = "nombre";
+  h6.innerHTML = ""+nombreProducto;
+
 
   var small = document.createElement("small");
   small.classList.add("text-body-secondary");
-  small.innerHTML = producto.cantidad;
-  div.appendChild(small);
+  small.id = "cantidad";
+  small.innerHTML = ""+cantidad;
+
 
   var span = document.createElement("span");
   span.classList.add("text-body-scondary");
   span.innerHTML = "€";
-  li.appendChild(span);
+
 
   var span2 = document.createElement("span");
   span2.classList.add("valor");
-  span2.innerHTML = ""+producto.precio;
+  span2.id = "precio";
+  span2.innerHTML = ""+precio;
+
+
   span.appendChild(span2);
+  div.appendChild(h6);
+  div.appendChild(small);
+  li.appendChild(div1);
+  li.appendChild(div);
+  li.appendChild(span);
+  
+  listaCarrito.appendChild(li);
+  li.style.overflow = "hidden";
+  li.style.maxHeight = 0;
+  
+  setTimeout(function() {
+    console.log("timeout hecho");
+    
+    li.style.overflow = "visible";
+    li.style.maxHeight = "100px";
+
+  }, 10); 
+  
+
+  
+
+
+  console.log("añadiendo producto");
 }
 
 function añadirAlCarrito(){
-  var nombreProducto = document.getElementById("addProducto");
-  var numeroRandomPrecio = Math.random() * (20 - 2) + 2;
-  añadirProducto(nombreProducto, numeroRandomPrecio, 1);
+  var nombreProducto = document.getElementById("addProducto").value;
+  var numeroRandomPrecio = (Math.random() * (20 - 2) + 2);
+  añadirProducto(nombreProducto, numeroRandomPrecio.toFixed(2), 1);
+  actualizarValorTotal();
+  var numeroPedidos = document.getElementById("numeroPedidos");
+  numeroPedidos.innerHTML = productosCarrito.length;
+  console.log("añadiendo al carrito");
+}
+
+
+
+function actualizarValorTotal(){
+  var valorTotal = 0;
+  productosCarrito.forEach(element =>{
+    valorTotal += parseFloat(element.precio)*element.cantidad*codigoPromocional;
+  }) 
+  var elementoValorTotal = document.getElementById("valorTotal");
+  elementoValorTotal.innerHTML = ""+valorTotal.toFixed(2);
+}
+
+
+function actualizarLista(){
+  productosCarrito.forEach(e =>{
+    e.li.querySelector("#nombre").innerHTML = e.nombre;
+    e.li.querySelector("#cantidad").innerHTML = e.cantidad;
+    e.li.querySelector("#precio").innerHTML = e.getPrecio();
+  }) 
+  var numeroPedidos = document.getElementById("numeroPedidos");
+  numeroPedidos.innerHTML = productosCarrito.length;
+}
+
+function codigoPromocionalFunc(){
+  console.log(document.getElementById("codigo").value);
+  if(document.getElementById("codigo").value == "pepe"){
+    codigoPromocional = 0.90;
+    actualizarValorTotal();
+  }
+  else{
+
+  }
 }
 
 

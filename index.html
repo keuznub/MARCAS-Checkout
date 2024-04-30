@@ -10,7 +10,6 @@
     <title>Checkout example · Bootstrap v5.3</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="cover.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
@@ -46,58 +45,27 @@
       <div class="col-md-5 col-lg-4 order-md-last todoCarrito">
         <h4 class="d-flex justify-content-between align-items-center mb-3">
           <span class="text-primary">Tu carrito</span>
-          <span class="badge bg-primary rounded-pill numeroPedidos">3</span>
+          <span class="badge bg-primary rounded-pill" id="numeroPedidos">0</span>
         </h4>
         <ul class="list-group mb-3" id="listaCarrito">
-          <li class="list-group-item d-flex justify-content-between lh-sm producto">
-            <div class="btn-group me-2" role="group" aria-label="First group">
-              <button type="button" class="btn btn-primary add" onclick="">-</button>
-              <button type="button" class="btn btn-primary remove" onclick="">+</button>              
-            </div>
-            <div>
-              <h6 class="my-0 nombre">Product name</h6>
-              <small class="text-body-secondary cantidad">x1</small>
-            </div>
-            <span class="text-body-secondary"><span class="valor">12</span>€</span>
-          </li>
-          <li class="list-group-item d-flex justify-content-between lh-sm">
-            <div>
-              <h6 class="my-0">Second product</h6>
-              <small class="text-body-secondary">Brief description</small>
-            </div>
-            <span class="text-body-secondary">$8</span>
-          </li>
-          <li class="list-group-item d-flex justify-content-between lh-sm">
-            <div>
-              <h6 class="my-0">Third item</h6>
-              <small class="text-body-secondary">Brief description</small>
-            </div>
-            <span class="text-body-secondary">$5</span>
-          </li>
-          <li class="list-group-item d-flex justify-content-between bg-body-tertiary">
-            <div class="text-success">
-              <h6 class="my-0">Promo code</h6>
-              <small>EXAMPLECODE</small>
-            </div>
-            <span class="text-success">−$5</span>
-          </li>
+
           <li class="list-group-item d-flex justify-content-between">
-            <span>Total (USD)</span>
-            <strong>$20</strong>
+            <span>Total (€)</span>
+            <strong><strong class="valorTotal" id="valorTotal">0</strong>€</strong>
           </li>
         </ul>
 
         <form class="card p-2">
           <div class="input-group">
-            <input type="text" class="form-control" placeholder="Codigo promocional">
-            <button type="submit" class="btn btn-secondary">Aplicar</button>
+            <input type="text" class="form-control" placeholder="Codigo promocional" id="codigo">
+            <button type="button" class="btn btn-secondary" onclick="codigoPromocionalFunc()">Aplicar</button>
           </div>
         </form>
         <br>
         <form class="card p-2">
           <div class="input-group">
             <input type="text" class="form-control" placeholder="Nombre del producto" id="addProducto" required>
-            <button type="submit" class="btn btn-secondary">Añadir al Carrito</button>
+            <button type="button" class="btn btn-secondary" onclick="añadirAlCarrito()">Añadir al Carrito</button>
             <input type="hidden" value="">
           </div>
         </form>
