@@ -96,13 +96,12 @@ function añadirProducto(nombreProducto, precio,cantidad){
 
   var span = document.createElement("span");
   span.classList.add("text-body-scondary");
-  span.innerHTML = "€";
 
 
   var span2 = document.createElement("span");
   span2.classList.add("valor");
   span2.id = "precio";
-  span2.innerHTML = ""+precio;
+  span2.innerHTML = ""+precio+"€";
 
 
   span.appendChild(span2);
@@ -157,7 +156,7 @@ function actualizarLista(){
   productosCarrito.forEach(e =>{
     e.li.querySelector("#nombre").innerHTML = e.nombre;
     e.li.querySelector("#cantidad").innerHTML = e.cantidad;
-    e.li.querySelector("#precio").innerHTML = e.getPrecio();
+    e.li.querySelector("#precio").innerHTML = e.getPrecio() + "€";
   }) 
   var numeroPedidos = document.getElementById("numeroPedidos");
   numeroPedidos.innerHTML = productosCarrito.length;
@@ -174,6 +173,65 @@ function codigoPromocionalFunc(){
   }
 }
 
+function validarSubmit(){
+  var error = document.getElementById("error");
+  if(productosCarrito.length <= 0){
+    error.style.display = "block";
+    return false;
+  }else{
+    var numeroPedidoPHP = document.getElementById("numeroPedidoPHP");
+    numeroPedidoPHP.value = (Math.random() * (99999 - 10000) + 10000).toFixed(0);
+    error.style.display = "none";
+    return true;
+  }
+}
+
+function getCitys(e){
+  console.log("Has hecho click" );
+  console.log(e.value);
+  if(e.value=="es"){
+    habilitarOptions("es");
+  }
+  if(e.value=="uk"){
+    habilitarOptions("uk");
+  }
+  if(e.value=="de"){
+    habilitarOptions("de");
+  }
+  if(e.value=="fr"){
+    habilitarOptions("fr");
+  }
+  if(e.value=="ua"){
+    habilitarOptions("ua");
+  }
+  if(e.value=="eeuu"){
+    habilitarOptions("eeuu");
+  }
+}
+
+function habilitarOptions(variable){
+  var select = document.getElementById("state");
+  select.disabled = false;
+  var opciones = document.querySelectorAll("#state option");
+  var opcionesArray = Array.from(opciones);
+  console.log("fuera foreach");
+  console.log(opciones);
+  console.log(opcionesArray);
+  opcionesArray.forEach(element=>{
+    console.log("dentro del foreach");
+    console.log(element.classList);
+    if(element.classList.contains(variable)){
+      element.style.display = "block";
+      console.log(variable + " block")
+      element.selected = true;
+    }
+    else{
+      console.log(variable + " none")
+      element.style.display = "none";
+    }
+  })
+
+}
 
 
 /*
